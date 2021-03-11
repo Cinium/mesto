@@ -1,0 +1,7 @@
+.profile__user-pic {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 100%;
+    margin-right: 30px;
+}

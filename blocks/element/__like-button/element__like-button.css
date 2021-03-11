@@ -1,0 +1,12 @@
+.element__like-button {
+    padding: 0;
+    border: none;
+    background-color: white;
+    max-height: 19px;
+}
+
+.element__like-button:hover {
+    opacity: .5;
+    transition: .2s;
+    cursor: pointer;
+}
