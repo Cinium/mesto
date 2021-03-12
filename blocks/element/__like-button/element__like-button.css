@@ -3,6 +3,7 @@
     border: none;
     background-color: white;
     max-height: 19px;
+    outline: none;
 }
 
 .element__like-button:hover {

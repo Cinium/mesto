@@ -6,4 +6,25 @@
     padding: 0;
     box-sizing: border-box;
     align-self: flex-end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-7px);
  }
+
+ @media screen and (max-width: 1023px) {
+    .profile__edit-button {
+       width: 18px;
+       height: 18px;
+       position: absolute;
+       transform: translateX(100%);
+       right: -10px;
+       bottom: 9px;
+    }
+ }
+
+ @media screen and (max-width: 764px) {
+    .profile__edit-button {
+       bottom: 6px;
+    }
+ } 
