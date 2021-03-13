@@ -7,8 +7,18 @@
     cursor: pointer;
     box-sizing: border-box;
     transition: .2s;
+    font-size: 14px;
+    line-height: 17px;
+    padding: 0;
 }
 
 .popup__submit:hover {
     opacity: .8;
+}
+
+@media screen and (max-width: 767px) {
+    .popup__submit {
+        min-width: 238px;
+        min-height: 46px;
+    }
 }

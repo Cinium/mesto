@@ -1,7 +1,6 @@
 .page {
     font-family: 'Inter', Arial, sans-serif;
     margin: 0 auto;
-    padding-top: 45px;
     padding: 45px 0 60px;
     max-width: 1280px;
     min-width: 320px;
@@ -11,4 +10,10 @@
     -moz-text-size-adjust: 100%;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
+}
+
+@media screen and (max-width: 424px) {
+    .page {
+        padding: 28px 0 36px;
+    }
 }

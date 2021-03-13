@@ -7,9 +7,17 @@
     border-radius: 10px;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 34px 36px 37px;
-    display: flex;
+    transform: translate(-50%, -50%); /* по пёрфектпикселю расположение попапа не соответствует макету, */
+    padding: 34px 36px 37px;          /*но мне показалось, что логичнее и красивее попап расположить ровно по центру  */
+    display: flex;                    /* верно ли это? */
     flex-direction: column;
-    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 767px) {
+    .popup__container {
+        max-width: 282px;
+        max-height: 322px;
+        padding: 25px 22px;
+    }
 }
