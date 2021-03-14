@@ -2,6 +2,7 @@ let popup = document.querySelector('.popup');
 let editButton = document.querySelector('.profile__edit-button');
 let popupCloseButton = document.querySelector('.popup__close-button');
 let popupOverlay = document.querySelector('.popup__overlay');
+let popupSaveButton = document.querySelector('.popup__submit');
 
 function openPopup() {
     popup.classList.add('popup_opened');
@@ -23,6 +24,8 @@ popupOverlay.addEventListener('click', function() {
     closePopup()
 });
 
+
+
 let popupForm = document.querySelector('.popup__container');
 let nameInput = document.querySelector('.popup__name');
 let jobInput = document.querySelector('.popup__job');
@@ -41,3 +44,4 @@ function formSubmitHandler (evt) {
 } // БОЖЕЕЕ ОНО РАБОТАЕТ
 
 popupForm.addEventListener('submit', formSubmitHandler);
+popupSaveButton.addEventListener('click', closePopup);
