@@ -13,6 +13,7 @@
     .profile__add-button {
         position: relative;
         width: 282px;
+        margin: 0 auto;
     }
 }
 

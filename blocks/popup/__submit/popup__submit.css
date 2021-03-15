@@ -7,9 +7,10 @@
     cursor: pointer;
     box-sizing: border-box;
     transition: .2s;
-    font-size: 14px;
-    line-height: 17px;
+    font-size: 18px;
+    line-height: 22px;
     padding: 0;
+    margin-top: 15px;
 }
 
 .popup__submit:hover {
