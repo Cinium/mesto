@@ -8,6 +8,9 @@ let profileJob = document.querySelector('.profile__user-job');
 let profileName = document.querySelector('.profile__user-name');
 
 function openPopup() {
+    userName.value = profileName.textContent;
+    userJob.value = profileJob.textContent;
+
     popup.classList.add('popup_opened');
 }
 
@@ -17,9 +20,6 @@ function closePopup() {
 
 function formSubmitHandler (evt) {
     evt.preventDefault();
-
-    userName.getAttribute('value');
-    userJob.getAttribute('value');
 
     profileName.textContent = userName.value;
     profileJob.textContent = userJob.value;
