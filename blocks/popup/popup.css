@@ -10,3 +10,7 @@
     justify-content: center;
     align-items: center;
 }
+
+.popup.popup-image {
+    background-color: rgba(0, 0, 0, .9);
+}
