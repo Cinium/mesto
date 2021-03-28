@@ -28,5 +28,6 @@ const initialCards = [
 
 // карточки из массива при загрузке страницы
 initialCards.forEach((arrElement) => {
-    createCard(arrElement);
-  })
+    elements.prepend(createCard(arrElement));
+}) // если код добавления карточек перенести в script.js 
+  // появляется ошибка "initialCards is not defined"

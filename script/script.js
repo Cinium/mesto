@@ -51,11 +51,6 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
 }
 
-// тоггл лайка
-function toggleLike(like) {
-like.classList.toggle('popup__like-button_active');
-}
-
 // создание карточки
 function createCard(item) {
   const elementTemplate = document.querySelector('.element-template').content;
@@ -70,7 +65,6 @@ function createCard(item) {
   elementImage.src = item.link;
   elementImage.alt = 'фото места';
   elementTitle.textContent = item.place;
-  elements.prepend(element);
 
   likeButton.addEventListener('click', function() { // лайк
     likeButton.classList.toggle('element__active-like-icon');
@@ -85,6 +79,8 @@ function createCard(item) {
     imagePopupPic.src = item.link;
     openPopup(imagePopup);
   });
+
+  return element;
 }
 
 // обработчик формы создания карточек
@@ -96,7 +92,7 @@ function addFormHandler (evt) {
     link: userLink.value
   };
 
-  createCard(userCard);
+  elements.prepend(createCard(userCard));
   addPopupForm.reset();
   closePopup(addPopup);
 }
