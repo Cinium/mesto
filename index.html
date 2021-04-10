@@ -41,27 +41,40 @@
                 </div> 
             </article>
         </template>
+        
         <div class="popup popup-edit">
             <div class="popup__container">
-                <form class="popup__form" name="profileForm">
+                <form class="popup__form" name="editForm" novalidate>
                     <button class="popup__close-button button" type="button"></button>
                     <h2 class="popup__title">Редактировать профиль</h2>
-                    <input class="popup__input popup__input_type_name" type="text" name="name" value="Жак-Ив Кусто">
-                    <input class="popup__input popup__input_type_job" type="text" name="job" value="Исследователь океана">
+
+                    <input id="name-input" class="popup__input popup__input_type_name" minlength="2" maxlength="40" type="text" name="name" value="Жак-Ив Кусто" required>
+                    <span class="popup__error name-input-error"></span>
+
+                    <input id="job-input" class="popup__input popup__input_type_job" minlength="2" maxlength="200" type="text" name="job" value="Исследователь океана" required>
+                    <span class="popup__error job-input-error"></span>
+
                     <button class="popup__submit" type="submit">Сохранить</button>
                 </form>
             </div>
+            <div class="popup-edit__overlay overlay"></div>
         </div>
         <div class="popup popup-add">
             <div class="popup__container">
-                <form class="popup__form" name="newPlaceForm">
+                <form class="popup__form" name="addForm" novalidate>
                     <button class="popup__close-button button" type="button"></button>
                     <h2 class="popup__title">Новое место</h2>
-                    <input class="popup__input popup__input_type_place" type="text" name="place" placeholder="Название" value="">
-                    <input class="popup__input popup__input_type_link" type="text" name="link" placeholder="Ссылка на картинку" value="">
-                    <button class="popup__submit" type="submit">Создать</button>
+                    
+                    <input id="place-input" class="popup__input popup__input_type_place" type="text" name="place" placeholder="Название" minlength="2" maxlength="30" value="" required>
+                    <span class="popup__error place-input-error"></span>
+
+                    <input id="link-input" class="popup__input popup__input_type_link" type="url" name="link" placeholder="Ссылка на картинку" value="" required>
+                    <span class="popup__error link-input-error"></span>
+
+                    <button class="popup__submit" type="submit" >Создать</button>
                 </form>
             </div>
+            <div class="popup-add__overlay overlay"></div>
         </div>
         <div class="popup popup-image">
             <figure class="popup__figure">
@@ -69,12 +82,15 @@
                 <img class="popup__image" src=" " alt="фото места">
                 <figcaption class="popup__image-title"></figcaption>
             </figure>
+            <div class="popup-image__overlay overlay"></div>
         </div>
+        
     </main>
     <footer class="footer">
         <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
     </footer>
-    <script src="./script/script.js"></script>
+    <script src="./script/validation.js"></script>
     <script src="./script/initial-cards.js"></script>
+    <script src="./script/script.js"></script>
 </body>
 </html>

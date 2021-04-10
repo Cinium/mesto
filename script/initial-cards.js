@@ -25,9 +25,3 @@ const initialCards = [
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
   ];
-
-// карточки из массива при загрузке страницы
-initialCards.forEach((arrElement) => {
-    elements.prepend(createCard(arrElement));
-}) // если код добавления карточек перенести в script.js 
-  // появляется ошибка "initialCards is not defined"
