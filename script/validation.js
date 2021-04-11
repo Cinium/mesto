@@ -1,75 +1,87 @@
-// да начнется валидация!
-function enableValidation() {
+const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inactiveButtonClass: 'popup__submit_inactive',
+  inputErrorClass: 'popup__input_error',
+  errorClass: 'popup__error'
+}
+
+function enableValidation(config) {
     // список всех форм в документе
-    const formList = Array.from(document.querySelectorAll('.popup__form'));
-  
+    const formList = Array.from(document.querySelectorAll(config.formSelector));
     // на каждую форму повесим слушатель сабмита
-    formList.forEach((form) => {
+    formList.forEach(form => {
       form.addEventListener('submit', (evt) => {
         evt.preventDefault();
 
-        // обработчик форм
-        formsHandler(form);
+        if (form.getAttribute('name') == 'editForm') { 
+          editFormHandler(form, config);
+         } 
+         else {
+          addFormHandler(form, config);
+         }
       });
-      inputsEventListeners(form);
+      inputsEventListeners(form, config);
     });
 }
 
 // создание слушателей инпутов
-function inputsEventListeners(form) {
+function inputsEventListeners(form, config) {
     // кнопка сабмита
-    const submitButton = form.querySelector('.popup__submit');
+    const submitButton = form.querySelector(config.submitButtonSelector);
     // список всех инпутов в форме
-    const inputList = Array.from(form.querySelectorAll('.popup__input'));
+    const inputList = Array.from(form.querySelectorAll(config.inputSelector));
 
-    toggleButtonState(inputList, submitButton)
+    toggleButtonState(inputList, submitButton, config)
 
-    // на каждый инпут повесим слушателя ввода
-    inputList.forEach((input) => {
-        input.addEventListener('input', () => {
+    // // на каждый инпут повесим слушателя ввода
+    inputList.forEach(input => {
+        input.addEventListener('input', e => {
             // проверяем валидность поля ввода
-            checkInputValidity(form, input);
+            checkInputValidity(form, input, config);
             // активируем/деактивируем кнопку
-            toggleButtonState(inputList, submitButton)
+            toggleButtonState(inputList, submitButton, config)
         });
     })
 }
 
 // проверка инпута на валидность
-function checkInputValidity(form, input) {
+function checkInputValidity(form, input, config) {
     if (input.validity.valid) {
-        hideInputError(form, input, input.validationMessage);
+        hideInputError(form, input, config);
     }
     else {
-        showInputError(form, input, input.validationMessage);
+        showInputError(form, input, input.validationMessage, config);
     }
 }
 
 
 // показать ошибку инпута
-function showInputError(form, input, errorMessage) {
+function showInputError(form, input, errorMessage, config) {
     const errorElement = form.querySelector(`.${input.id}-error`);
   
-    input.classList.add('popup__input_error');
+    input.classList.add(config.inputErrorClass);
     errorElement.textContent = errorMessage;
   }
   
   //скрыть ошибку инпута
-  function hideInputError(form, input) {
+  function hideInputError(form, input, config) {
     const errorElement = form.querySelector(`.${input.id}-error`);
   
-    input.classList.remove('popup__input_error');
+    input.classList.remove(config.inputErrorClass);
     errorElement.textContent = '';
   }
 
 // изменение состояния кнопки сабмита
-function toggleButtonState(inputList, button) {
+function toggleButtonState(inputList, button, config) {
+  
     if (!checkFormValidity(inputList)) {
-      button.classList.add('popup__submit_inactive');
+      button.classList.add(config.inactiveButtonClass);
       button.disabled = true;
     }
     else {
-      button.classList.remove('popup__submit_inactive');
+      button.classList.remove(config.inactiveButtonClass);
       button.disabled = false;
     }
   }
@@ -81,11 +93,4 @@ function checkFormValidity(inputList) {
 
 
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit',
-  inactiveButtonClass: 'popup__submit_inactive',
-  inputErrorClass: 'popup__input_error',
-  errorClass: 'popup__error'
-});
+enableValidation(config);

@@ -39,73 +39,59 @@ const imagePopupCloseButton = imagePopup.querySelector('.popup__close-button');
 
 // ** ФУНКЦИИ **
 
-// //изменение профиля
-// function editFormHandler (evt) {
-//   evt.preventDefault();
+//изменение профиля
+function editFormHandler (form, config) {
  
-//   profileName.textContent = inputName.value;
-//   profileJob.textContent = inputJob.value;
-
-//   closePopup(editPopup);
-// }
-
-// единый обработчик всех форм
-function formsHandler(form) {
-   if (form.getAttribute('name') == 'editForm') {
-    profileName.textContent = inputName.value;
-    profileJob.textContent = inputJob.value;
-
-    closePopup();
-   }
-   else {
-    const userCard = {
-      place: inputPlace.value,
-      link: inputLink.value
-    };
-  
-    elements.prepend(createCard(userCard));
-    addPopupForm.reset();
-    toggleButtonState(Array.from(form.querySelectorAll('.popup__input')), form.querySelector('.popup__submit'));
-    closePopup();
-   }
+  profileName.textContent = inputName.value;
+  profileJob.textContent = inputJob.value;
+  closePopup(editPopup);
 }
 
 // обработчик формы создания карточек
+function addFormHandler (form, config) {
 
-// function addFormHandler (evt) {
-//   evt.preventDefault();
+  const userCard = {
+    place: inputPlace.value,
+    link: inputLink.value
+  };
 
-//   const userCard = {
-//     place: inputPlace.value,
-//     link: inputLink.value
-//   };
+  elements.prepend(createCard(userCard));
+  addPopupForm.reset();
+  toggleButtonState(Array.from(form.querySelectorAll(config.inputSelector)), form.querySelector(config.submitButtonSelector), config);
+  closePopup(addPopup);
+}
 
-//   elements.prepend(createCard(userCard));
-//   addPopupForm.reset();
-//   closePopup(addPopup);
-// }
+// открытие попапов
+function openPopup(popup) {
 
-// открытие/закрытие попапов
-function openPopup(popup, overlay) {
   popup.classList.add('popup_opened');
-  overlay.classList.add('overlay_opened');
+  popup.querySelector('.overlay').classList.add('overlay_opened');
   // закрытые попапов по нажатию на Esc
   document.body.addEventListener('keydown', closePopupWithEscHandler);
 }
 
-function closePopup() {
-  popups.forEach((popup) => {
-    popup.classList.remove('popup_opened');
-  })
-  overlays.forEach((overlay) => {
-    overlay.classList.remove('overlay_opened');
-  })
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+  popup.querySelector('.overlay').classList.remove('overlay_opened');
+
   document.body.removeEventListener('keydown', closePopupWithEscHandler);
 }
 
+// function closePopup() {
+//   popups.forEach((popup) => {
+//     popup.classList.remove('popup_opened');
+//   })
+//   overlays.forEach((overlay) => {
+//     overlay.classList.remove('overlay_opened');
+//   })
+//   document.body.removeEventListener('keydown', closePopupWithEscHandler);
+// }
+
 function closePopupWithEscHandler(evt) {
   if (evt.key === 'Escape') {
-    closePopup();
+    closePopup(editPopup);
+    closePopup(addPopup);
+    closePopup(imagePopup);
   }
 }
 
@@ -155,22 +141,22 @@ editButton.addEventListener('click', function () {
     inputName.value = profileName.textContent;
     inputJob.value = profileJob.textContent;
 
-    openPopup(editPopup, editPopupOverlay);
+    openPopup(editPopup);
   });
 
 // кнопка добавления карточки
 addButton.addEventListener('click', () => {
-    openPopup(addPopup, addPopupOverlay);
+    openPopup(addPopup);
   });
 
 // кнопки закрытия попапов
-addPopupCloseButton.addEventListener('click', () => closePopup());
-editPopupCloseButton.addEventListener('click', () => closePopup());
-imagePopupCloseButton.addEventListener('click', () => closePopup());
+addPopupCloseButton.addEventListener('click', () => closePopup(addPopup));
+editPopupCloseButton.addEventListener('click', () => closePopup(editPopup));
+imagePopupCloseButton.addEventListener('click', () => closePopup(imagePopup));
 
 // оверлеи
 overlays.forEach((overlay) => {
-  overlay.addEventListener('click', () => closePopup())
+  overlay.addEventListener('click', () => closePopup(overlay.closest('.popup')))
 })
 
 
