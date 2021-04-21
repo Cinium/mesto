@@ -1,17 +1,53 @@
+export {editFormHandler, addFormHandler};
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
+// массив стандартных карточек
+const initialCards = [
+  {
+    place: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    place: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    place: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    place: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    place: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    place: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+// объект настроек для валидации
+const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inactiveButtonClass: 'popup__submit_inactive',
+  inputErrorClass: 'popup__input_error',
+  errorClass: 'popup__error'
+}
+
 // попапы
 const editPopup = document.querySelector('.popup-edit');
 const addPopup = document.querySelector('.popup-add');
 const imagePopup = document.querySelector('.popup-image');
-const popups = [editPopup, addPopup, imagePopup];
-
-const editPopupOverlay = document.querySelector('.popup-edit__overlay');
-const addPopupOverlay = document.querySelector('.popup-add__overlay');
-const imagePopupOverlay = document.querySelector('.popup-image__overlay');
-const overlays = [editPopupOverlay, addPopupOverlay, imagePopupOverlay];
 
 // формы
-const editPopupForm = editPopup.querySelector('.popup__form');
 const addPopupForm = addPopup.querySelector('.popup__form');
+const formList = Array.from(document.querySelectorAll(config.formSelector));
 
 // инпуты
 const inputName = document.querySelector('.popup__input_type_name');  
@@ -40,52 +76,41 @@ const imagePopupCloseButton = imagePopup.querySelector('.popup__close-button');
 // ** ФУНКЦИИ **
 
 //изменение профиля
-function editFormHandler (form, config) {
- 
+function editFormHandler () {
   profileName.textContent = inputName.value;
   profileJob.textContent = inputJob.value;
   closePopup(editPopup);
 }
 
 // обработчик формы создания карточек
-function addFormHandler (form, config) {
+function addFormHandler () {
+  const card = new Card(inputPlace.value, inputLink.value);
+  const cardElement = card.generateCard();
 
-  const userCard = {
-    place: inputPlace.value,
-    link: inputLink.value
-  };
-
-  elements.prepend(createCard(userCard));
+  elements.prepend(cardElement);
   addPopupForm.reset();
-  toggleButtonState(Array.from(form.querySelectorAll(config.inputSelector)), form.querySelector(config.submitButtonSelector), config);
   closePopup(addPopup);
 }
 
 // открытие попапов
-function openPopup(popup) {
-
+export default function openPopup(popup) {
   popup.classList.add('popup_opened');
   popup.querySelector('.overlay').classList.add('overlay_opened');
+
   // закрытые попапов по нажатию на Esc
   document.body.addEventListener('keydown', closePopupWithEscHandler);
+  // закрытие по клику на оверлей
+  popup.querySelector('.overlay').addEventListener('click', () => closePopup(popup));
 }
 
+// закрытие попапов
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   popup.querySelector('.overlay').classList.remove('overlay_opened');
 
   document.body.removeEventListener('keydown', closePopupWithEscHandler);
+  popup.querySelector('.overlay').removeEventListener('click', () => closePopup(popup));
 }
-
-// function closePopup() {
-//   popups.forEach((popup) => {
-//     popup.classList.remove('popup_opened');
-//   })
-//   overlays.forEach((overlay) => {
-//     overlay.classList.remove('overlay_opened');
-//   })
-//   document.body.removeEventListener('keydown', closePopupWithEscHandler);
-// }
 
 function closePopupWithEscHandler(evt) {
   if (evt.key === 'Escape') {
@@ -95,49 +120,11 @@ function closePopupWithEscHandler(evt) {
   }
 }
 
-// создание карточки
-function createCard(item) {
-  const elementTemplate = document.querySelector('.element-template').content;
-  const element = elementTemplate.querySelector('.element').cloneNode(true);
-
-  const likeButton = element.querySelector('.element__like-button');
-  const deleteButton = element.querySelector('.element__delete-button');
-
-  const elementImage = element.querySelector('.element__image');
-  const elementTitle = element.querySelector('.element__title');
-
-  elementImage.src = item.link;
-  elementImage.alt = 'фото места';
-  elementTitle.textContent = item.place;
-
-  likeButton.addEventListener('click', function() { // лайк
-    likeButton.classList.toggle('element__active-like-icon');
-  })
-
-  deleteButton.addEventListener('click', function() { // удаление карточки
-    deleteButton.closest('.element').remove();
-  })
-
-  element.querySelector('.element__image').addEventListener('click', function () {// открытие попапа
-    imagePopupTitle.textContent = item.place;
-    imagePopupPic.src = item.link;
-    openPopup(imagePopup, imagePopupOverlay);
-  });
-
-  return element;
-}
-
-
-// карточки из массива при загрузке страницы
-initialCards.forEach((arrElement) => {
-  elements.prepend(createCard(arrElement));
-})
-
 
 // ** СЛУШАТЕЛИ **
 
 // кнопка редактирования
-editButton.addEventListener('click', function () {
+editButton.addEventListener('click', () => {
     inputName.value = profileName.textContent;
     inputJob.value = profileJob.textContent;
 
@@ -154,10 +141,15 @@ addPopupCloseButton.addEventListener('click', () => closePopup(addPopup));
 editPopupCloseButton.addEventListener('click', () => closePopup(editPopup));
 imagePopupCloseButton.addEventListener('click', () => closePopup(imagePopup));
 
-// оверлеи
-overlays.forEach((overlay) => {
-  overlay.addEventListener('click', () => closePopup(overlay.closest('.popup')))
+// валидация для каждой формы
+formList.forEach((form) => {
+  new FormValidator(config, form).enableValidation();
 })
 
+// создание изначального набора карточек
+initialCards.forEach((item) => {
+  const card = new Card(item.place, item.link);
+  const cardElement = card.generateCard();
 
-
+  elements.prepend(cardElement);
+});

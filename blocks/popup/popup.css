@@ -1,5 +1,4 @@
 .popup {
-    /* background-color: rgba(0, 0, 0, 0);  */
     position: fixed;
     display: flex;
     top: 0;
@@ -14,7 +13,3 @@
     opacity: 0;
     transition: height 0s .3s, opacity .2s ease-in-out;
 }
-
-/* .popup.popup-image {
-    background-color: rgba(0, 0, 0, .9);
-} */
