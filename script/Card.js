@@ -1,26 +1,31 @@
-import openPopup from './script.js'
 
 export default class Card {
-    constructor(text, link) {
+    constructor(text, link, templateSelector, openImagePopup) {
         this._text = text;
         this._link = link;
+        this._templateSelector = templateSelector;
+        this._openImagePopup = openImagePopup;
     }
 
     generateCard() {
         this._element = this._getTemplate();
+        this._titleElement = this._element.querySelector('.element__title');
+        this._imageElement =this._element.querySelector('.element__image');
+        this._likeButton = this._element.querySelector('.element__like-button');
+        this._deleteButton = this._element.querySelector('.element__delete-button');
+
         this._setEventListeners();
       
-        this._element.querySelector('.element__image').src = this._link;
-        this._element.querySelector('.element__image').alt = 'фото места';
-        this._element.querySelector('.element__title').textContent = this._text;
+        this._imageElement.src = this._link;
+        this._imageElement.alt = 'фото места';
+        this._titleElement.textContent = this._text;
       
         return this._element;
       } 
 
     _getTemplate() {
-        // забираем размеку из HTML и клонируем элемент
           const cardElement = document
-          .querySelector('.element-template')
+          .querySelector(this._templateSelector)
           .content
           .querySelector('.element')
           .cloneNode(true);
@@ -31,32 +36,25 @@ export default class Card {
       // добавить слушатели на карточку
       _setEventListeners() {
           // слушатель кнопки лайка
-        this._element.querySelector('.element__like-button').addEventListener('click', () => {
+          this._likeButton.addEventListener('click', () => {
           this._handleLikeButton();
         });
         // слушатель кнопки удаления карточки
-        this._element.querySelector('.element__delete-button').addEventListener('click', () => {
+        this._deleteButton.addEventListener('click', () => {
             this._handleDeleteButton();
         });
         // слшуатель нажатия на картинку 
-        this._element.querySelector('.element__image').addEventListener('click', () => {
-            this._openImagePopupHandler();
+        this._imageElement.addEventListener('click', () => {
+          this._openImagePopup(this._text, this._link);
         })
       }
       
       // обработчик лайка
       _handleLikeButton() {
-        this._element.querySelector('.element__like-button').classList.toggle('element__active-like-icon');
+        this._likeButton.classList.toggle('element__active-like-icon');
       }
        // обработчик кнопки удаления
       _handleDeleteButton() {
-        this._element.querySelector('.element__delete-button').closest('.element').remove();
-      }
-      // обработчик открытия попапа по нажатию на картинку
-      _openImagePopupHandler() {
-        document.querySelector('.popup__image-title').textContent = this._text;
-        document.querySelector('.popup__image').src = this._link;
-        
-        openPopup(document.querySelector('.popup-image'));
+        this._element.remove();
       }
 }

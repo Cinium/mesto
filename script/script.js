@@ -1,34 +1,7 @@
-export {editFormHandler, addFormHandler};
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
+import {initialCards} from './initialCards.js';
 
-// массив стандартных карточек
-const initialCards = [
-  {
-    place: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    place: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    place: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    place: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    place: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    place: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
 
 // объект настроек для валидации
 const config = {
@@ -47,6 +20,7 @@ const imagePopup = document.querySelector('.popup-image');
 
 // формы
 const addPopupForm = addPopup.querySelector('.popup__form');
+const editPopupForm = editPopup.querySelector('.popup__form');
 const formList = Array.from(document.querySelectorAll(config.formSelector));
 
 // инпуты
@@ -84,11 +58,12 @@ function editFormHandler () {
 
 // обработчик формы создания карточек
 function addFormHandler () {
-  const card = new Card(inputPlace.value, inputLink.value);
+  const card = new Card(inputPlace.value, inputLink.value, '.element-template', openImagePopup);
   const cardElement = card.generateCard();
 
   elements.prepend(cardElement);
   addPopupForm.reset();
+  new FormValidator(config, addPopupForm).toggleButtonState();
   closePopup(addPopup);
 }
 
@@ -100,7 +75,7 @@ export default function openPopup(popup) {
   // закрытые попапов по нажатию на Esc
   document.body.addEventListener('keydown', closePopupWithEscHandler);
   // закрытие по клику на оверлей
-  popup.querySelector('.overlay').addEventListener('click', () => closePopup(popup));
+  popup.querySelector('.overlay').addEventListener('click', () => closeByOverlay(popup));
 }
 
 // закрытие попапов
@@ -109,15 +84,24 @@ function closePopup(popup) {
   popup.querySelector('.overlay').classList.remove('overlay_opened');
 
   document.body.removeEventListener('keydown', closePopupWithEscHandler);
-  popup.querySelector('.overlay').removeEventListener('click', () => closePopup(popup));
+  popup.querySelector('.overlay').removeEventListener('click', () => closeByOverlay(popup));
+}
+
+function closeByOverlay(popup) {
+  closePopup(popup);
 }
 
 function closePopupWithEscHandler(evt) {
   if (evt.key === 'Escape') {
-    closePopup(editPopup);
-    closePopup(addPopup);
-    closePopup(imagePopup);
+    closePopup(document.querySelector('.popup_opened'));
   }
+}
+
+export function openImagePopup(text, link) {
+  document.querySelector('.popup__image-title').textContent = text;
+  document.querySelector('.popup__image').src = link;
+        
+  openPopup(document.querySelector('.popup-image'));
 }
 
 
@@ -141,14 +125,25 @@ addPopupCloseButton.addEventListener('click', () => closePopup(addPopup));
 editPopupCloseButton.addEventListener('click', () => closePopup(editPopup));
 imagePopupCloseButton.addEventListener('click', () => closePopup(imagePopup));
 
-// валидация для каждой формы
-formList.forEach((form) => {
-  new FormValidator(config, form).enableValidation();
+// валидация формы добавления карточки
+new FormValidator(config, addPopupForm).enableValidation();
+// слушатель сабмита формы добавления
+addPopupForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  addFormHandler();
+})
+
+// валидация формы редактирования
+new FormValidator(config, editPopupForm).enableValidation();
+// слушатель сабмита формы редактирования
+editPopupForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  editFormHandler();
 })
 
 // создание изначального набора карточек
 initialCards.forEach((item) => {
-  const card = new Card(item.place, item.link);
+  const card = new Card(item.place, item.link, '.element-template', openImagePopup);
   const cardElement = card.generateCard();
 
   elements.prepend(cardElement);

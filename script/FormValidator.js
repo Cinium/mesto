@@ -1,37 +1,24 @@
-import {addFormHandler, editFormHandler} from './script.js'
 
 export default class FormValidator {
     constructor(config, formElement) {
         this._config = config;
         this._formElement = formElement;
+        this._inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector));
     }
     
     // включаем валидацию
     enableValidation() {
-        //список всех инпутов формы
-        const inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector));
-
-        this._toggleButtonState(inputList);
-        this._setEventListeners(inputList);
+        this.toggleButtonState();
+        this._setEventListeners();
     }
 
-    _setEventListeners(inputList) {
-        this._formElement.addEventListener('submit', (evt) => {
-            evt.preventDefault();
-
-            if (this._formElement.getAttribute('name') == 'editForm') { 
-                editFormHandler(this._formElement, this._config);
-               } 
-               else {
-                addFormHandler(this._formElement, this._config);
-               }
-        });
+    _setEventListeners() {
         // для каждого инпута из списка инпутов
-        inputList.forEach((input) => {
+        this._inputList.forEach((input) => {
             // повесить слушатель ввода, чекающий валидность инпута
             input.addEventListener('input', () => this._checkInputValidity(input));
             // слушатель ввода, переключающий состояние кнопки
-            input.addEventListener('input', () => this._toggleButtonState(inputList));
+            input.addEventListener('input', () => this.toggleButtonState());
         });
         
     }
@@ -61,10 +48,10 @@ export default class FormValidator {
     }
     
     // переклюение состояния кнопки
-    _toggleButtonState(inputList) {
+    toggleButtonState() {
         const submitButton = this._formElement.querySelector(this._config.submitButtonSelector);
         // если НЕ все инпуты валидны, выключается кнопочка
-        if (!this._checkFormValidity(inputList)) {
+        if (!this._checkFormValidity()) {
             submitButton.classList.add(this._config.inactiveButtonClass);
             submitButton.disabled = true;
           }
@@ -75,7 +62,7 @@ export default class FormValidator {
         }
     }
      // проверка ВСЕХ инпутов формы на валидность
-    _checkFormValidity(inputList) {
-        return inputList.every(input => input.validity.valid);
+    _checkFormValidity() {
+        return this._inputList.every(input => input.validity.valid);
     }
 }
