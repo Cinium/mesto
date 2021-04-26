@@ -58,12 +58,16 @@ function editFormHandler () {
 
 // обработчик формы создания карточек
 function addFormHandler () {
-  const card = new Card(inputPlace.value, inputLink.value, '.element-template', openImagePopup);
+  const cardData = {
+    place: inputPlace.value,
+    link: inputLink.value
+  }
+  const card = new Card(cardData, '.element-template', openImagePopup);
   const cardElement = card.generateCard();
 
   elements.prepend(cardElement);
   addPopupForm.reset();
-  new FormValidator(config, addPopupForm).toggleButtonState();
+  addFormValidation.toggleButtonState();
   closePopup(addPopup);
 }
 
@@ -75,7 +79,7 @@ export default function openPopup(popup) {
   // закрытые попапов по нажатию на Esc
   document.body.addEventListener('keydown', closePopupWithEscHandler);
   // закрытие по клику на оверлей
-  popup.querySelector('.overlay').addEventListener('click', () => closeByOverlay(popup));
+  popup.querySelector('.overlay').addEventListener('click', closeByOverlay);
 }
 
 // закрытие попапов
@@ -84,11 +88,11 @@ function closePopup(popup) {
   popup.querySelector('.overlay').classList.remove('overlay_opened');
 
   document.body.removeEventListener('keydown', closePopupWithEscHandler);
-  popup.querySelector('.overlay').removeEventListener('click', () => closeByOverlay(popup));
+  popup.querySelector('.overlay').removeEventListener('click', closeByOverlay);
 }
 
-function closeByOverlay(popup) {
-  closePopup(popup);
+function closeByOverlay() {
+  closePopup(document.querySelector('.popup_opened'));
 }
 
 function closePopupWithEscHandler(evt) {
@@ -126,7 +130,8 @@ editPopupCloseButton.addEventListener('click', () => closePopup(editPopup));
 imagePopupCloseButton.addEventListener('click', () => closePopup(imagePopup));
 
 // валидация формы добавления карточки
-new FormValidator(config, addPopupForm).enableValidation();
+const addFormValidation = new FormValidator(config, addPopupForm)
+addFormValidation.enableValidation();
 // слушатель сабмита формы добавления
 addPopupForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
@@ -134,7 +139,8 @@ addPopupForm.addEventListener('submit', (evt) => {
 })
 
 // валидация формы редактирования
-new FormValidator(config, editPopupForm).enableValidation();
+const editFormValidation = new FormValidator(config, editPopupForm)
+editFormValidation.enableValidation();
 // слушатель сабмита формы редактирования
 editPopupForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
@@ -143,7 +149,8 @@ editPopupForm.addEventListener('submit', (evt) => {
 
 // создание изначального набора карточек
 initialCards.forEach((item) => {
-  const card = new Card(item.place, item.link, '.element-template', openImagePopup);
+  
+  const card = new Card(item, '.element-template', openImagePopup);
   const cardElement = card.generateCard();
 
   elements.prepend(cardElement);

@@ -4,6 +4,7 @@ export default class FormValidator {
         this._config = config;
         this._formElement = formElement;
         this._inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector));
+        this.submitButton = this._formElement.querySelector(this._config.submitButtonSelector);
     }
     
     // включаем валидацию
@@ -49,16 +50,16 @@ export default class FormValidator {
     
     // переклюение состояния кнопки
     toggleButtonState() {
-        const submitButton = this._formElement.querySelector(this._config.submitButtonSelector);
+        // const submitButton = this._formElement.querySelector(this._config.submitButtonSelector);
         // если НЕ все инпуты валидны, выключается кнопочка
         if (!this._checkFormValidity()) {
-            submitButton.classList.add(this._config.inactiveButtonClass);
-            submitButton.disabled = true;
+            this.submitButton.classList.add(this._config.inactiveButtonClass);
+            this.submitButton.disabled = true;
           }
         // иначе включается
         else {
-            submitButton.classList.remove(this._config.inactiveButtonClass);
-            submitButton.disabled = false;
+            this.submitButton.classList.remove(this._config.inactiveButtonClass);
+            this.submitButton.disabled = false;
         }
     }
      // проверка ВСЕХ инпутов формы на валидность
