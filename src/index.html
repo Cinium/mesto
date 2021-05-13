@@ -4,26 +4,25 @@
     <meta charset="utf-8">
     <title>Mesto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./pages/index.css">
 </head>
 <body class="page">
     <header class="header">
-        <img src="./images/logo.svg" alt="лого" class="header__logo">
+        <img src="<%=require('./images/logo.svg')%>" alt="лого" class="header__logo">
     </header>
     <main>
         <section class="profile">
-            <img src="./images/userpic.png" alt="фото пользователя" class="profile__user-pic">
+            <img src="<%=require('./images/userpic.png')%>" alt="фото пользователя" class="profile__user-pic">
             <div class="profile__user-info">
                 <div class="profile__name-and-button-container">
                     <h1 class="profile__user-name">Жак-Ив Кусто</h1>
                     <button class="profile__edit-button button" type="button">
-                        <img src="./images/edit-button.svg" class="profile__edit-button-icon" alt="иконка карандаша">
+                        <img src="<%=require('./images/edit-button.svg')%>" class="profile__edit-button-icon" alt="иконка карандаша">
                     </button>
                 </div>
                 <p class="profile__user-job">Исследователь океана</p>
             </div>
             <button class="profile__add-button button" type="button">
-                <img src="./images/add-button.svg" class="profile__add-button-icon" alt="иконка плюсика">
+                <img src="<%=require('./images/add-button.svg')%>" class="profile__add-button-icon" alt="иконка плюсика">
             </button>
         </section>
         <section class="elements">
@@ -32,9 +31,9 @@
         <template class="element-template">
             <article class="element">
                 <button class="element__delete-button">
-                    <img src="./images/Trash.svg" alt="удалить" class="element__delete-icon">
+                    <img src="<%=require('./images/Trash.svg')%>" alt="удалить" class="element__delete-icon">
                 </button>
-                <img class="element__image" src="_" alt="изображение места">
+                <img class="element__image" alt="изображение места">
                 <div class="element__container">
                     <h2 class="element__title"></h2>
                     <button class="element__like-button" type="button"></button>
@@ -79,7 +78,7 @@
         <div class="popup popup-image">
             <figure class="popup__figure">
                 <button class="popup__close-button button" type="button"></button>
-                <img class="popup__image" src=" " alt="фото места">
+                <img class="popup__image" alt="фото места">
                 <figcaption class="popup__image-title"></figcaption>
             </figure>
             <div class="popup-image__overlay overlay"></div>
@@ -89,6 +88,5 @@
     <footer class="footer">
         <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
     </footer>
-    <script type="module" src="./script/script.js"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@ export default class FormValidator {
         this.submitButton = this._formElement.querySelector(this._config.submitButtonSelector);
     }
     
-    // включаем валидацию
+    // включить валидацию
     enableValidation() {
         this.toggleButtonState();
         this._setEventListeners();
@@ -50,7 +50,6 @@ export default class FormValidator {
     
     // переклюение состояния кнопки
     toggleButtonState() {
-        // const submitButton = this._formElement.querySelector(this._config.submitButtonSelector);
         // если НЕ все инпуты валидны, выключается кнопочка
         if (!this._checkFormValidity()) {
             this.submitButton.classList.add(this._config.inactiveButtonClass);

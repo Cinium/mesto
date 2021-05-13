@@ -1,22 +1,23 @@
 
-
 export default class Card {
-    constructor(data, templateSelector, openImagePopup) {
-        this._text = data.place;
-        this._link = data.link;
+    constructor({place, link}, templateSelector, handleCardClick) {
+        this._text = place;
+        this._link = link;
         this._templateSelector = templateSelector;
-        this._openImagePopup = openImagePopup;
+        this._handleCardClick = handleCardClick;
     }
-
+    // генерация карточки
     generateCard() {
+        // получить разметку карточки
         this._element = this._getTemplate();
+        // элементы карточки
         this._titleElement = this._element.querySelector('.element__title');
-        this._imageElement =this._element.querySelector('.element__image');
+        this._imageElement = this._element.querySelector('.element__image');
         this._likeButton = this._element.querySelector('.element__like-button');
         this._deleteButton = this._element.querySelector('.element__delete-button');
-
+        // добавить слушателей на элементы карточки
         this._setEventListeners();
-      
+        // вписать значения элементов
         this._imageElement.src = this._link;
         this._imageElement.alt = 'фото места';
         this._titleElement.textContent = this._text;
@@ -46,7 +47,7 @@ export default class Card {
         });
         // слшуатель нажатия на картинку 
         this._imageElement.addEventListener('click', () => {
-          this._openImagePopup(this._text, this._link);
+          this._handleCardClick(this._text, this._link);
         })
       }
       
