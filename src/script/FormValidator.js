@@ -13,6 +13,14 @@ export default class FormValidator {
         this._setEventListeners();
     }
 
+    resetValidation() {
+        this._inputList.forEach((input) => {
+            const errorElement = this._formElement.querySelector(`.${input.id}-error`);
+            this._hideInputError(input, errorElement);
+            this.toggleButtonState();
+        });
+    }
+
     _setEventListeners() {
         // для каждого инпута из списка инпутов
         this._inputList.forEach((input) => {
