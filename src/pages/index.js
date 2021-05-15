@@ -29,9 +29,6 @@ const popupWithEditForm = new PopupWithForm(editPopupSelector, editFormHandler);
 // попап с формой добавления карточки
 const popupWithAddForm = new PopupWithForm(addPopupSelector, addFormHandler);
 
-
-
-
 // информация профиля
 const userInfo = new UserInfo('.profile__user-name', '.profile__user-job');
 
@@ -40,8 +37,7 @@ const addFormValidation = new FormValidator(config, addPopupForm)
 // валидация формы редактирования
 const editFormValidation = new FormValidator(config, editPopupForm)
 
-
-// создание изначального набора карточек
+// карточки на странице
 const cardList = new Section({
   data: initialCards,
   renderer: (item) => {
@@ -63,23 +59,11 @@ function editFormHandler (data) {
 
 // обработчик формы создания карточек
 function addFormHandler (cardData) {
-  const section = new Section({
-    data: [cardData],
-    renderer: (cardData) => {
-      renderCard(cardData)
-    }
-  }, 
-  elementsSelector);
+  renderCard(cardData);
 
-  section.renderItems();
   addPopupForm.reset();
   addFormValidation.toggleButtonState();
   popupWithAddForm.close();
-}
-
-// обработчик нажатия на картинку
-function handleCardClick(text, link) {
-  popupWithImage.open(text, link)
 }
 
 // рендерер карточек
@@ -89,6 +73,12 @@ function renderCard (cards) {
 
   cardList.addItem(cardElement);
 }
+
+// обработчик нажатия на картинку
+function handleCardClick(text, link) {
+  popupWithImage.open(text, link)
+}
+
 
 
 
@@ -123,9 +113,9 @@ popupWithEditForm.setEventListeners();
 // добавить слушателей событий на попап с формой добавления карточки
 popupWithAddForm.setEventListeners();
 
-// ключить валидацию формы добавления карточки
+// включить валидацию формы добавления карточки
 addFormValidation.enableValidation();
-// ключить валидацию формы редактирования
+// включить валидацию формы редактирования
 editFormValidation.enableValidation();
 
 // рендеринг изначального набора карточек
