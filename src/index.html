@@ -11,15 +11,18 @@
     </header>
     <main>
         <section class="profile">
-            <img src="<%=require('./images/userpic.png')%>" alt="фото пользователя" class="profile__user-pic">
+            <button class="profile__edit-avatar-button">
+                <img src="" alt="фото пользователя" class="profile__user-pic">
+                <img src="<%=require('./images/editavataricon.svg')%>" class="profile__edit-avatar-icon" alt="иконка карандаша">
+            </button>
             <div class="profile__user-info">
                 <div class="profile__name-and-button-container">
-                    <h1 class="profile__user-name">Жак-Ив Кусто</h1>
+                    <h1 class="profile__user-name">Имя</h1>
                     <button class="profile__edit-button button" type="button">
                         <img src="<%=require('./images/edit-button.svg')%>" class="profile__edit-button-icon" alt="иконка карандаша">
                     </button>
                 </div>
-                <p class="profile__user-job">Исследователь океана</p>
+                <p class="profile__user-job">Деятельность</p>
             </div>
             <button class="profile__add-button button" type="button">
                 <img src="<%=require('./images/add-button.svg')%>" class="profile__add-button-icon" alt="иконка плюсика">
@@ -30,13 +33,17 @@
         </section>
         <template class="element-template">
             <article class="element">
-                <button class="element__delete-button">
+                <button class="element__delete-button element__delete-button_hidden">
                     <img src="<%=require('./images/Trash.svg')%>" alt="удалить" class="element__delete-icon">
                 </button>
-                <img class="element__image" alt="изображение места">
+                <img class="element__image" alt="изображение">
                 <div class="element__container">
                     <h2 class="element__title"></h2>
-                    <button class="element__like-button" type="button"></button>
+                    
+                    <div class="element__likes-container">
+                        <button class="element__like-button" type="button"></button>
+                        <p class="element__like-amount"></p>
+                    </div>
                 </div> 
             </article>
         </template>
@@ -50,7 +57,7 @@
                     <input id="name-input" placeholder="Имя" class="popup__input popup__input_type_name" minlength="2" maxlength="40" type="text" name="name" value="Жак-Ив Кусто" required>
                     <span class="popup__error name-input-error"></span>
 
-                    <input id="job-input" placeholder="Вид деятельности" class="popup__input popup__input_type_job" minlength="2" maxlength="200" type="text" name="job" value="Исследователь океана" required>
+                    <input id="job-input" placeholder="Вид деятельности" class="popup__input popup__input_type_job" minlength="2" maxlength="200" type="text" name="about" value="Исследователь океана" required>
                     <span class="popup__error job-input-error"></span>
 
                     <button class="popup__submit" type="submit">Сохранить</button>
@@ -64,7 +71,7 @@
                     <button class="popup__close-button button" type="button"></button>
                     <h2 class="popup__title">Новое место</h2>
                     
-                    <input id="place-input" class="popup__input popup__input_type_place" type="text" name="place" placeholder="Название" minlength="2" maxlength="30" value="" required>
+                    <input id="place-input" class="popup__input popup__input_type_place" type="text" name="name" placeholder="Название" minlength="2" maxlength="30" value="" required>
                     <span class="popup__error place-input-error"></span>
 
                     <input id="link-input" class="popup__input popup__input_type_link" type="url" name="link" placeholder="Ссылка на картинку" value="" required>
@@ -83,7 +90,28 @@
             </figure>
             <div class="popup-image__overlay overlay"></div>
         </div>
-        
+        <div class="popup popup-submit">
+            <div class="popup__container">
+                <form class="popup__form" name="submitForm" novalidate>
+                    <button class="popup__close-button button" type="button"></button>
+                    <h2 class="popup__title">Вы уверены?</h2>
+                    <button class="popup__submit" type="submit" >Да</button>
+                </form>
+            </div>
+            <div class="overlay"></div>
+        </div>
+        <div class="popup popup-avatar">
+            <div class="popup__container">
+                <form class="popup__form" name="avatarForm" novalidate>
+                    <button class="popup__close-button button" type="button"></button>
+                    <h2 class="popup__title">Обновить аватар</h2>
+                    <input id="avatar-input" class="popup__input popup__input_type_avatar" type="url" name="link" placeholder="Ссылка на картинку" value="" required>
+                    <span class="popup__error avatar-input-error"></span>
+                    <button class="popup__submit" type="submit" >Сохранить</button>
+                </form>
+            </div>
+            <div class="overlay"></div>
+        </div>
     </main>
     <footer class="footer">
         <p class="footer__copyright">&copy; 2020 Mesto Russia</p>

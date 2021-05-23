@@ -6,7 +6,7 @@
     border: 2px solid white;
     border-radius: 2px;
     box-sizing: border-box;
-    margin-left: auto;  /* решение не очень красивое, но зато не абсолют) */
+    margin-left: auto;
 }
 
 @media screen and (max-width: 1023px) {
