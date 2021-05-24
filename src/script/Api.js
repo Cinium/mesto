@@ -11,13 +11,7 @@ export default class Api {
                 authorization: this._token
             }
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`${res.status}`);
-            })
-            
+            .then(res => this._getResponse(res)) 
     }
 
     // опубликовать карточку
@@ -32,7 +26,8 @@ export default class Api {
                 name: newCardName,
                 link: newCardLink
             })
-        });
+        })
+            .then(res => this._getResponse(res))
     }
 
     // удалить карточку
@@ -42,7 +37,8 @@ export default class Api {
             headers: {
                 authorization: this._token,
             },
-        });
+        })
+            .then(res => this._getResponse(res))
     }
 
     // получить данные о пользователе
@@ -52,13 +48,7 @@ export default class Api {
                 authorization: this._token
             }
         })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            
-            return Promise.reject(`${res.status}`);
-        })
+            .then(res => this._getResponse(res))
     }
 
     // изменить данные пользователя
@@ -73,7 +63,8 @@ export default class Api {
                 name: newName,
                 about: newAbout
             })
-        });
+        })
+            .then(res => this._getResponse(res))
     }
 
     // исправить аватарку
@@ -87,7 +78,8 @@ export default class Api {
             body: JSON.stringify({
                 avatar: avatarLink
             })
-        });
+        })
+            .then(res => this._getResponse(res))
     }
 
     // поставить лайк
@@ -97,7 +89,8 @@ export default class Api {
             headers: {
                 authorization: this._token,
             },
-        });
+        })
+            .then(res => this._getResponse(res))
     }
 
     // удалить лайк
@@ -107,7 +100,15 @@ export default class Api {
             headers: {
                 authorization: this._token,
             },
-        });
+        })
+            .then(res => this._getResponse(res))
+    }
+
+    _getResponse(res) {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`${res.status}`);
     }
   }
   

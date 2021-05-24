@@ -1,6 +1,6 @@
 
 export default class Card {
-    constructor(data, templateSelector, currentUser, handleCardClick, deleteButtonHandler, likeButtonHandler, isLiked) {
+    constructor(data, templateSelector, currentUser, handleCardClick, deleteButtonHandler, likeButtonHandler) {
         this._text = data.name;
         this._link = data.link;
         this._id = data._id;
@@ -10,7 +10,6 @@ export default class Card {
         this._handleCardClick = handleCardClick;
         this._deleteButtonHandler = deleteButtonHandler;
         this._likeButtonHandler = likeButtonHandler;
-        this.isLiked = isLiked
     }
     // генерация карточки
     generateCard() {
@@ -52,7 +51,7 @@ export default class Card {
         }
 
         // если карточка уже лайкнута пользователем
-        if (this.isLiked(this._data)) {
+        if (this.isLiked()) {
           // сделать иконку активной
           this._likeButton.classList.add('element__active-like-icon');
         }
@@ -74,7 +73,7 @@ export default class Card {
     _setEventListeners() {
         // слушатель кнопки лайка
         this._likeButton.addEventListener('click', () => {
-          this._likeButtonHandler(this._likeButton, this._data, this._likes);
+          this._likeButtonHandler(this._likeButton, this._data, this._likes, this.isLiked());
         });
         // слушатель кнопки удаления карточки
         this._deleteButton.addEventListener('click', () => {
@@ -85,5 +84,20 @@ export default class Card {
         this._imageElement.addEventListener('click', () => {
           this._handleCardClick(this._text, this._link);
         })
+    }
+
+    // есть ли лайк пользователя на карточке
+    isLiked() {
+      let hasLike = false
+      // проходимся по каждому лайкнувшему карточку
+      this._data.likes.forEach(likedUser => {
+        let valuesArr = Object.values(likedUser)
+        // если содержит АйДи пользователя
+        if (valuesArr.includes(this._currentUser)) {
+          // значит карточка уже лайканая
+          hasLike = true
+        }
+      })
+      return hasLike;
     }
 }
