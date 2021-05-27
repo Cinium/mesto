@@ -128,7 +128,7 @@ function renderCard (cardData) {
                         userInfo.getUserId(), // АйДи текущего пользователя
                         handleCardClick, // обработчик клика на пикчу
                         handleDeleteButton, // обработчик удаления
-                        handleLikeButton) // обработчик лайка
+                        api)
 
   // сгенерировать то, что получилось выше
   const cardElement = card.generateCard();
@@ -164,37 +164,6 @@ function changeAvatarFormHandler (inputValue) {
 function handleDeleteButton(cardId, cardElement) {
   // открыть попап подтверждения действия
   popupWithSubmit.open(cardId, cardElement);
-
-  // // удалить карточку
-  // confirmCardDeletion(cardId, cardElement);
-}
-
-
-// обработчик кнопки лайка
-function handleLikeButton(likeButton, cardData, likesAmount, isLiked) {
-  //если карточка уже лайкнута
-  if (isLiked) {
-    // удаляем класс "активной кнопки" лайка
-    likeButton.classList.remove('element__active-like-icon');
-    // отправляем запрос снятия лайка на сервер
-    api.deleteLikeFromCard(cardData._id)
-      .then(data => {
-        // ставим обновленное количество лайков из пришедшей даты
-        likesAmount.textContent = data.likes.length;
-      })
-      .catch(err => console.log(err))
-  // если лайка еще нет
-  } else {
-    // активируем активную иконку
-    likeButton.classList.add('element__active-like-icon');
-    // отправляем лайк на сервер
-    api.putLikeOnCard(cardData._id)
-      .then(data => {
-        // ставим обновленное количество лайков из пришедшей даты
-        likesAmount.textContent = data.likes.length;
-      })
-      .catch(err => console.log(err))
-  }
 }
 
 

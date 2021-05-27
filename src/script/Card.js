@@ -1,6 +1,6 @@
 
 export default class Card {
-    constructor(data, templateSelector, currentUser, handleCardClick, deleteButtonHandler, likeButtonHandler) {
+    constructor(data, templateSelector, currentUser, handleCardClick, deleteButtonHandler, api) {
         this._text = data.name;
         this._link = data.link;
         this._id = data._id;
@@ -9,7 +9,7 @@ export default class Card {
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
         this._deleteButtonHandler = deleteButtonHandler;
-        this._likeButtonHandler = likeButtonHandler;
+        this.api = api
     }
     // генерация карточки
     generateCard() {
@@ -73,7 +73,25 @@ export default class Card {
     _setEventListeners() {
         // слушатель кнопки лайка
         this._likeButton.addEventListener('click', () => {
-          this._likeButtonHandler(this._likeButton, this._data, this._likes, this.isLiked());
+          if (this.isLiked()) {
+            this.api.deleteLikeFromCard(this._data._id)
+            .then(data => {
+              this._data.likes = data.likes
+              this._likeButton.classList.remove('element__active-like-icon');
+              this._likes.textContent = data.likes.length;
+            })
+            .catch(err => console.log(err))
+          } else {
+            this.api.putLikeOnCard(this._data._id)
+            .then(data => {
+              this._data.likes = data.likes
+              this._likeButton.classList.add('element__active-like-icon');
+              this._likes.textContent = data.likes.length;
+            })
+            .catch(err => console.log(err))
+          }
+          
+          
         });
         // слушатель кнопки удаления карточки
         this._deleteButton.addEventListener('click', () => {
